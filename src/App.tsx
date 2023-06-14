@@ -22,21 +22,21 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/* Views */
+import HomeView from './pages/HomeView/HomeView';
+
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+	<IonApp>
+		<IonReactRouter>
+			<IonRouterOutlet>
+				<Route exact path='/'>
+					<HomeView />
+				</Route>
+			</IonRouterOutlet>
+		</IonReactRouter>
+	</IonApp>
 );
 
 export default App;
