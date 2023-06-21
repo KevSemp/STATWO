@@ -4,6 +4,7 @@ import {
 	IonCardSubtitle,
 	IonCardTitle,
 	IonCardContent,
+	IonImg,
 } from '@ionic/react';
 
 export default function Card({
@@ -15,12 +16,13 @@ export default function Card({
 	href = undefined,
 }) {
 	return (
-		<IonCard href={href} target={href ? '_self' : undefined}>
-			{image && (
-				<picture>
-					<img src={image} alt={alt} className='ion-padding' />
-				</picture>
-			)}
+		<IonCard
+			routerLink={href}
+			href={href}
+			routerDirection='forward'
+			target={href ? '_self' : undefined}
+		>
+			{image && <IonImg src={image} alt={alt} className='ion-padding' />}
 			{(title || subtitle) && (
 				<IonCardHeader>
 					{title && <IonCardTitle>{title}</IonCardTitle>}

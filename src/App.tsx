@@ -35,7 +35,11 @@ const App: React.FC = () => (
 			<IonRouterOutlet>
 				{PRIMARY_MENU.map((item) => (
 					<Route key={`route-${item.id}`} exact path={item.path}>
-						<MenuView menu={item.submenu} />
+						<MenuView
+							menu={item.submenu}
+							title={item.title}
+							image={item.icon}
+						/>
 					</Route>
 				))}
 				<Route exact path='/'>
