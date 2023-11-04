@@ -4,6 +4,8 @@ import {
 	IonButtons,
 	IonMenuButton,
 	IonTitle,
+	IonBackButton,
+	IonRouterLink,
 } from '@ionic/react';
 
 export default function Header() {
@@ -12,8 +14,11 @@ export default function Header() {
 			<IonToolbar>
 				<IonButtons slot='start'>
 					<IonMenuButton />
+					<IonBackButton />
 				</IonButtons>
-				<IonTitle>Statwo</IonTitle>
+				<IonRouterLink routerDirection='root' href='/' color='dark'>
+					<IonTitle>Statwo</IonTitle>
+				</IonRouterLink>
 			</IonToolbar>
 		</IonHeader>
 	);

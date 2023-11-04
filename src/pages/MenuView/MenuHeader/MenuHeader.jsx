@@ -1,18 +1,10 @@
-import { IonIcon, IonImg, IonRouterLink, IonRow, IonText } from '@ionic/react';
-import { chevronBackOutline } from 'ionicons/icons';
+import { IonIcon, IonImg, IonRow, IonText } from '@ionic/react';
+import GoBack from '../../../components/GoBack/GoBack';
 
 export default function MenuHeader({ title, image }) {
 	return (
 		<header>
-			<IonRow>
-				<IonRouterLink routerLink='/'>
-					<IonIcon
-						icon={chevronBackOutline}
-						size='large'
-						color='dark'
-					/>
-				</IonRouterLink>
-			</IonRow>
+			{/* <GoBack route='/' /> */}
 			<IonRow className='ion-justify-content-center'>
 				<IonImg src={image} alt={title} loading='lazy' />
 			</IonRow>

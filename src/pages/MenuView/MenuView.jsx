@@ -34,6 +34,7 @@ export default function MenuView({ menu, title, image }) {
 					</IonItem>
 				))}
 			</section>
+			{/* TODO:  back to top */}
 		</BasicLayout>
 	);
 }

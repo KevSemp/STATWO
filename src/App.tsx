@@ -26,6 +26,8 @@ import HomeView from './pages/HomeView/HomeView';
 import MenuView from './pages/MenuView/MenuView';
 
 import { PRIMARY_MENU } from './data/menus';
+import FormulaView from './pages/FormulaView/FormulaView';
+import { MathJaxContext } from 'better-react-mathjax';
 
 setupIonicReact();
 
@@ -33,18 +35,23 @@ const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-				{PRIMARY_MENU.map((item) => (
-					<Route key={`route-${item.id}`} exact path={item.path}>
-						<MenuView
-							menu={item.submenu}
-							title={item.title}
-							image={item.icon}
-						/>
+				<MathJaxContext>
+					{PRIMARY_MENU.map((item) => (
+						<Route key={`route-${item.id}`} exact path={item.path}>
+							<MenuView
+								menu={item.submenu}
+								title={item.title}
+								image={item.icon}
+							/>
+						</Route>
+					))}
+					<Route exact path='/formula/:id'>
+						<FormulaView />
 					</Route>
-				))}
-				<Route exact path='/'>
-					<HomeView />
-				</Route>
+					<Route exact path='/'>
+						<HomeView />
+					</Route>
+				</MathJaxContext>
 			</IonRouterOutlet>
 		</IonReactRouter>
 	</IonApp>
