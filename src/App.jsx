@@ -1,7 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home.jsx';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,13 +31,10 @@ import { MathJaxContext } from 'better-react-mathjax';
 
 setupIonicReact();
 
-const App: React.FC = () => (
+const App = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-				<Route exact path='/home'>
-					<Home />
-				</Route>
 				<MathJaxContext>
 					{PRIMARY_MENU.map((item) => (
 						<Route key={`route-${item.id}`} exact path={item.path}>
