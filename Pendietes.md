@@ -1,12 +1,12 @@
 Pendiente:
 
 -   [x] Menu lateral
--   [] Inicio de Sesión
-    -   [] Registro de usuario
-    -   [] Recuperación de contraseña
+-   [x] Inicio de Sesión
+    -   [x] Registro de usuario
+    -   [x] Recuperación de contraseña
 -   [x] Página de about us
 -   [x] Página de más información del tema
--   [] Página de explicación de la formula
+-   [x] Página de explicación de la formula
 -   [] Componente de formulario para llenar la formula
     -   [] Hook que actualice el valor de la formula
     -   [] Input para cada variable

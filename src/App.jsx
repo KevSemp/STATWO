@@ -30,6 +30,9 @@ import FormulaView from './pages/FormulaView/FormulaView';
 import { MathJaxContext } from 'better-react-mathjax';
 import AboutUsView from './pages/AboutUsView/AboutUsView';
 import MoreInfoView from './pages/MoreInfoView/MoreInfoView';
+import LoginView from './pages/LoginView/LoginView';
+import RegistroView from './pages/RegistroView/RegistroView';
+import RecuperarView from './pages/RecuperarView/RecuperarView';
 
 setupIonicReact();
 
@@ -50,9 +53,6 @@ const App = () => (
 					<Route exact path='/formula/:id'>
 						<FormulaView />
 					</Route>
-					<Route exact path='/'>
-						<HomeView />
-					</Route>
 					<Route exact path='/about_us'>
 						<AboutUsView />
 					</Route>
@@ -64,6 +64,18 @@ const App = () => (
 					</Route>
 					<Route exact path='/help/:id/formula'>
 						<MoreInfoView isVariables />
+					</Route>
+					<Route exact path='/login'>
+						<LoginView />
+					</Route>
+					<Route exact path='/registro'>
+						<RegistroView />
+					</Route>
+					<Route exact path='/recuperar'>
+						<RecuperarView />
+					</Route>
+					<Route exact path='/'>
+						<HomeView />
 					</Route>
 					{/* <Route path='*'>
 						<Redirect to='/' />

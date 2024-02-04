@@ -24,7 +24,11 @@ export default function Menu() {
 			<IonContent>
 				<IonList inset={false}>
 					{PRIMARY_MENU.map((menu_item) => (
-						<IonItem button={true} href={menu_item.path}>
+						<IonItem
+							button={true}
+							href={menu_item.path}
+							key={menu_item.id}
+						>
 							{/* <IonIcon
 								color='danger'
 								slot='start'
