@@ -6,6 +6,7 @@ import {
 	IonIcon,
 	IonItem,
 	IonLabel,
+	IonList,
 	IonRow,
 } from '@ionic/react';
 import BasicLayout from '../../layouts/BasicLayout/BasicLayout';
@@ -14,11 +15,12 @@ import { useParams } from 'react-router';
 import { formulario } from '../../data/formulario';
 import { aboutUs } from '../../data/about_us';
 import { useEffect, useState } from 'react';
+import { MathJax } from 'better-react-mathjax';
 
 export default function MoreInfoView({
 	isFormula = false,
 	isProfile = false,
-	...props
+	isVariables = false,
 }) {
 	const { id } = useParams();
 	const [data, setData] = useState({
@@ -35,39 +37,57 @@ export default function MoreInfoView({
 			const profile = aboutUs.find((p) => +p.id === +id);
 			setData(profile);
 		}
-	});
+		if (isVariables) {
+			const variable = formulario.find((v) => +v.id === +id);
+			setData(variable);
+		}
+	}, [id, isFormula, isProfile, isVariables]);
 
 	return (
 		<BasicLayout>
 			<IonGrid class={`ion-text-center ion-no-padding`}>
-				<IonRow class='ion-justify-content-center'>
+				<IonRow class='ion-justify-content-center ion-margin-bottom'>
 					<MenuHeader
 						title={data?.tema ?? 'Más Información'}
 						image={data?.image}
 						isProfile={isProfile}
 					/>
 				</IonRow>
-				{/* TODO: add a class to ion row to fill the hole line */}
-
 				<IonRow>
 					<IonCol size='12' gap={2}>
-						<IonCard
-							color='dark'
-							style={{
-								backgroundColor:
-									'var(--ion-toolbar-background, var(--ion-background-color, #fff))',
-								color: 'var(--ion-toolbar-color, var(--ion-text-color, #424242))',
-							}}
-						>
-							<IonCardContent
+						{(isFormula || isProfile) && (
+							<IonCard
+								color='dark'
 								style={{
-									textAlign: 'start',
-									fontSize: '1rem',
+									backgroundColor:
+										'var(--ion-toolbar-background, var(--ion-background-color, #fff))',
+									color: 'var(--ion-toolbar-color, var(--ion-text-color, #424242))',
 								}}
 							>
-								{data.descripcion ?? 'No hay descripción'}
-							</IonCardContent>
-						</IonCard>
+								<IonCardContent
+									style={{
+										textAlign: 'start',
+										fontSize: '1rem',
+									}}
+								>
+									{data.descripcion ?? 'No hay descripción'}
+								</IonCardContent>
+							</IonCard>
+						)}
+						{isVariables && (
+							<IonList>
+								{data.variables?.map((v) => (
+									<IonItem key={v.id}>
+										<IonLabel>
+											<MathJax inline>
+												{`${v.simbolo} = `}
+											</MathJax>
+											{v.descripcion}
+										</IonLabel>
+									</IonItem>
+								))}
+							</IonList>
+						)}
 					</IonCol>
 				</IonRow>
 			</IonGrid>

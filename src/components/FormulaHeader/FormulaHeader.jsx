@@ -27,11 +27,16 @@ export default function FormulaHeader({ title, topic, formulaID }) {
 			>
 				<IonText color='dark'>
 					<h2 className={styles.subtitle}>{title}</h2>
-					<IonIcon
-						icon={help}
-						className={`${styles.helpButton} ion-no-margin ion-no-padding`}
-						color='primary'
-					/>
+					<IonRouterLink
+						routerDirection='forward'
+						href={`/help/${formulaID}/formula`}
+					>
+						<IonIcon
+							icon={help}
+							className={`${styles.helpButton} ion-no-margin ion-no-padding`}
+							color='primary'
+						/>
+					</IonRouterLink>
 				</IonText>
 			</IonRow>
 		</header>

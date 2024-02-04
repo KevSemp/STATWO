@@ -62,6 +62,9 @@ const App = () => (
 					<Route exact path='/help/:id/info'>
 						<MoreInfoView isFormula />
 					</Route>
+					<Route exact path='/help/:id/formula'>
+						<MoreInfoView isVariables />
+					</Route>
 					{/* <Route path='*'>
 						<Redirect to='/' />
 					</Route> */}
