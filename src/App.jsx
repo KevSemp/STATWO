@@ -28,6 +28,8 @@ import MenuView from './pages/MenuView/MenuView';
 import { PRIMARY_MENU } from './data/menus';
 import FormulaView from './pages/FormulaView/FormulaView';
 import { MathJaxContext } from 'better-react-mathjax';
+import AboutUsView from './pages/AboutUsView/AboutUsView';
+import MoreInfoView from './pages/MoreInfoView/MoreInfoView';
 
 setupIonicReact();
 
@@ -51,6 +53,18 @@ const App = () => (
 					<Route exact path='/'>
 						<HomeView />
 					</Route>
+					<Route exact path='/about_us'>
+						<AboutUsView />
+					</Route>
+					<Route exact path='/about_us/:id'>
+						<MoreInfoView isProfile />
+					</Route>
+					<Route exact path='/help/:id/info'>
+						<MoreInfoView isFormula />
+					</Route>
+					{/* <Route path='*'>
+						<Redirect to='/' />
+					</Route> */}
 				</MathJaxContext>
 			</IonRouterOutlet>
 		</IonReactRouter>

@@ -1,25 +1,25 @@
 Pendiente:
 
 -   [x] Menu lateral
--   [ ] Inicio de Sesión
-    -   [ ] Registro de usuario
-    -   [ ] Recuperación de contraseña
--   [ ] Página de about us
--   [ ] Página de más información del tema
--   [ ] Página de explicación de la formula
--   [ ] Componente de formulario para llenar la formula
-    -   [ ] Hook que actualice el valor de la formula
-    -   [ ] Input para cada variable
-    -   [ ] Botón para calcular
--   [ ] Componente de resultado
-    -   [ ] Botón para limpiar
-    -   [ ] Botón para Editar fomulario
-    -   [ ] Botón para guardar resultado
-    -   [ ] Botón para compartir resultado
-        -   [ ] Botón para descargar resultado
-        -   [ ] Botón para imprimir resultado
--   [ ] Componente de historial
-    -   [ ] Lista de resultados
-    -   [ ] Botón para eliminar resultado
-    -   [ ] Botón para ver en formulario
--   [ ] Componente de formulario que viene de historial
+-   [] Inicio de Sesión
+    -   [] Registro de usuario
+    -   [] Recuperación de contraseña
+-   [x] Página de about us
+-   [x] Página de más información del tema
+-   [] Página de explicación de la formula
+-   [] Componente de formulario para llenar la formula
+    -   [] Hook que actualice el valor de la formula
+    -   [] Input para cada variable
+    -   [] Botón para calcular
+-   [] Componente de resultado
+    -   [] Botón para limpiar
+    -   [] Botón para Editar fomulario
+    -   [] Botón para guardar resultado
+    -   [] Botón para compartir resultado
+        -   [] Botón para descargar resultado
+        -   [] Botón para imprimir resultado
+-   [] Componente de historial
+    -   [] Lista de resultados
+    -   [] Botón para eliminar resultado
+    -   [] Botón para ver en formulario
+-   [] Componente de formulario que viene de historial

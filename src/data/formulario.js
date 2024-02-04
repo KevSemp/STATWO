@@ -126,7 +126,7 @@ export const formulario = [
 	{
 		id: 4,
 		formula:
-			'P : \\bar{p} \\pm \\sqrt{\\frac{z_{\\frac{\\alpha}{2}} * (1 - \\bar{p})}{n}}',
+			'\\(P : \\bar{p} \\pm \\sqrt{\\frac{z_{\\frac{\\alpha}{2}} * (1 - \\bar{p})}{n}}\\)',
 		formula2: 'p_prom \\pm sqrt((z_val * (1 - p_prom))/(n_val))',
 		variables: [
 			{
@@ -182,7 +182,7 @@ export const formulario = [
 	{
 		id: 5,
 		formula:
-			'P : \\bar{X} \\pm z_{\\frac{\\alpha}{2}} * \\sigma_{\\bar{X}}',
+			'\\(P : \\bar{X} \\pm z_{\\frac{\\alpha}{2}} * \\sigma_{\\bar{X}}\\)',
 		formula2: 'x \\pm z * sigma',
 		variables: [
 			{
@@ -340,7 +340,7 @@ export const formulario = [
 	{
 		id: 9,
 		formula:
-			'z = \\frac{(\\bar{X_{1}} - \\bar{X_{2}}) - d_{0}}{\\sqrt{\\frac{\\sigma_{1}^2}{n_{1}} + \\frac{\\sigma_{2}^2}{n_{2}}}}',
+			'\\(z = \\frac{(\\bar{X_{1}} - \\bar{X_{2}}) - d_{0}}{\\sqrt{\\frac{\\sigma_{1}^2}{n_{1}} + \\frac{\\sigma_{2}^2}{n_{2}}}}\\)',
 		formula2: '((X1 - X2) - d0)/(sqrt((sigma1 / n1) + (sigma2 / n2)))',
 		variables: [
 			{
