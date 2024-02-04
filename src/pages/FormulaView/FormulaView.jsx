@@ -6,7 +6,7 @@ import { formulario } from '../../data/formulario';
 import FormulaHeader from '../../components/FormulaHeader/FormulaHeader';
 import { MathJax, MathJaxContext } from 'better-react-mathjax';
 import Formula from '../../components/Formula/Formula';
-import { IonInput } from '@ionic/react';
+import { IonButton, IonInput } from '@ionic/react';
 
 export default function FormulaView() {
 	const { id } = useParams();
@@ -23,40 +23,59 @@ export default function FormulaView() {
 				formulaID={formula.id}
 			/>
 			<Formula formula={formula?.formula} />
-			<form onSubmit={(e) => e.preventDefault()}>
+			<form
+				onSubmit={(e) => e.preventDefault()}
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+					padding: '1rem',
+					gap: '1rem',
+					width: '100%',
+				}}
+			>
 				{formula?.variables.map(
 					(variable, index) =>
 						variable.formulario && (
-							<IonInput
+							<div
 								key={index}
-								name={variable.nombre}
-								type={variable.tipo}
-								required
-								label={
-									<MathJax>{`${variable.simbolo} = `}</MathJax>
-								}
-							></IonInput>
+								style={{
+									display: 'flex',
+									flexDirection: 'row',
+									alignItems: 'center',
+									justifyContent: 'center',
+									gap: '1rem',
+									width: '100%',
+								}}
+							>
+								<MathJax
+									inline
+								>{`${variable.simbolo}`}</MathJax>
+								=
+								<IonInput
+									name={variable.nombre}
+									type={variable.tipo}
+									required
+								></IonInput>
+							</div>
 						)
 				)}
-				{/* <IonItem
-												key={index}
-												style={{ border: 'none' }}>
-												<IonLabel>
-													<MathJax.Node
-														formula={`${variable.simbolo} = `}
-													/>
-												</IonLabel>
-												<IonInput
-													name={variable.nombre}
-													type={variable.tipo}
-													required
-													value={
-														data[variable.nombre]
-													}
-													onIonChange={
-														handleChange
-													}></IonInput>
-											</IonItem> */}
+				<IonButton expand='block' type='submit'>
+					Calcular
+				</IonButton>
+				{/* <IonItem key={index} style={{ border: 'none' }}>
+					<IonLabel>
+						<MathJax.Node formula={`${variable.simbolo} = `} />
+					</IonLabel>
+					<IonInput
+						name={variable.nombre}
+						type={variable.tipo}
+						required
+						value={data[variable.nombre]}
+						onIonChange={handleChange}
+					></IonInput>
+				</IonItem> */}
 			</form>
 		</BasicLayout>
 	);

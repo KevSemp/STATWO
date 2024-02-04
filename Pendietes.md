@@ -7,10 +7,10 @@ Pendiente:
 -   [x] Página de about us
 -   [x] Página de más información del tema
 -   [x] Página de explicación de la formula
--   [] Componente de formulario para llenar la formula
+-   [x] Componente de formulario para llenar la formula
     -   [] Hook que actualice el valor de la formula
-    -   [] Input para cada variable
-    -   [] Botón para calcular
+    -   [x] Input para cada variable
+    -   [x] Botón para calcular
 -   [] Componente de resultado
     -   [] Botón para limpiar
     -   [] Botón para Editar fomulario
