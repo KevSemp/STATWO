@@ -11,11 +11,11 @@ Pendiente:
     -   [] Hook que actualice el valor de la formula
     -   [x] Input para cada variable
     -   [x] Botón para calcular
--   [] Componente de resultado
-    -   [] Botón para limpiar
-    -   [] Botón para Editar fomulario
+-   [x] Componente de resultado
+    -   [x] Botón para limpiar
+    -   [x] Botón para Editar fomulario
     -   [] Botón para guardar resultado
-    -   [] Botón para compartir resultado
+    -   [x] Botón para compartir resultado
         -   [] Botón para descargar resultado
         -   [] Botón para imprimir resultado
 -   [] Componente de historial
