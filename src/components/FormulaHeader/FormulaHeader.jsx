@@ -13,6 +13,8 @@ export default function FormulaHeader({ title, topic, formulaID }) {
 					<IonRouterLink
 						routerDirection='forward'
 						href={`/help/${formulaID}/info`}
+						routerLink={`/help/${formulaID}/info`}
+						target='_self'
 					>
 						<IonIcon
 							icon={help}
@@ -30,6 +32,8 @@ export default function FormulaHeader({ title, topic, formulaID }) {
 					<IonRouterLink
 						routerDirection='forward'
 						href={`/help/${formulaID}/formula`}
+						routerLink={`/help/${formulaID}/formula`}
+						target='_self'
 					>
 						<IonIcon
 							icon={help}
