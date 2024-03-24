@@ -33,6 +33,7 @@ import MoreInfoView from './pages/MoreInfoView/MoreInfoView';
 import LoginView from './pages/LoginView/LoginView';
 import RegistroView from './pages/RegistroView/RegistroView';
 import RecuperarView from './pages/RecuperarView/RecuperarView';
+import GaussView from './pages/GaussView/GaussView';
 
 setupIonicReact();
 
@@ -73,6 +74,9 @@ const App = () => (
 					</Route>
 					<Route exact path='/recuperar'>
 						<RecuperarView />
+					</Route>
+					<Route exact path='/gauss'>
+						<GaussView />
 					</Route>
 					<Route exact path='/'>
 						<HomeView />
