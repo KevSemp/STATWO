@@ -8,7 +8,7 @@ Pendiente:
 -   [x] Página de más información del tema
 -   [x] Página de explicación de la formula
 -   [x] Componente de formulario para llenar la formula
-    -   [] Hook que actualice el valor de la formula
+    -   [x] Hook que actualice el valor de la formula
     -   [x] Input para cada variable
     -   [x] Botón para calcular
 -   [x] Componente de resultado

@@ -1,4 +1,4 @@
-import { IonIcon, IonItem, IonLabel, IonText } from '@ionic/react';
+import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 import BasicLayout from '../../layouts/BasicLayout/BasicLayout';
 import MenuHeader from './MenuHeader/MenuHeader';
 import { chevronForwardOutline } from 'ionicons/icons';
@@ -34,7 +34,6 @@ export default function MenuView({ menu, title, image }) {
 					</IonItem>
 				))}
 			</section>
-			{/* TODO:  back to top */}
 		</BasicLayout>
 	);
 }

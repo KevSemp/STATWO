@@ -15,8 +15,11 @@ import {
 	IonRow,
 } from '@ionic/react';
 import { evaluate } from 'mathjs';
-import { shareSocial } from 'ionicons/icons';
+import { shareSocial, warning } from 'ionicons/icons';
 import { shareOptions } from '../../data/shareOptions';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormulaView() {
 	const { id } = useParams();
@@ -25,6 +28,10 @@ export default function FormulaView() {
 	const [formulaText, setFormulaText] = useState('');
 	const [formulaResult, setFormulaResult] = useState('');
 	const [result, setResult] = useState('');
+	const [error, setError] = useState({
+		show: false,
+		message: '',
+	});
 	const modalRef = useRef();
 	const dismiss = () => modalRef.current?.dismiss();
 
@@ -55,22 +62,43 @@ export default function FormulaView() {
 		setFormulaText(formula?.formula);
 		setFormulaResult('');
 		setResult('');
+		setError({
+			show: false,
+			message: '',
+		});
 	};
 	const handleShare = () => {
 		const modal = document.getElementById('modal-share');
 		modal.classList.add('show-modal');
 	};
-	const invalidForm = () =>
-		formula?.variables?.find(
-			(variable) =>
+	const invalidForm = () => {
+		let message = '';
+		const hasError = formula?.variables?.find((variable) => {
+			if (variable?.invalid?.length > 0) {
+				message =
+					`${variable.simbolo}` +
+					' no puede ser ' +
+					variable.invalid.join(', ');
+				//message = variable.invalid.join(', ');
+			}
+			return (
 				variable.formulario &&
 				(!data.hasOwnProperty(variable?.nombre) ||
 					variable?.invalid?.includes(data[variable?.nombre]))
-		);
+			);
+		});
+		if (hasError) {
+			toast.error(<MathJax inline>{`${message}`}</MathJax>, {
+				position: 'bottom-center',
+				toastId: 'error',
+				theme: 'colored',
+			});
+			return true;
+		}
+		return false;
+	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		//TODO: ver donde mostrar el error para el usuario
-		//console.log(data);
 		if (invalidForm()) return;
 		let operacion = formula.formula;
 		let operacion2 = formula?.formula2 ?? null;
@@ -298,6 +326,11 @@ export default function FormulaView() {
 					</IonCol>
 				</IonRow>
 			)}
+			<ToastContainer
+				style={{
+					bottom: 'calc(env(safe-area-inset-bottom) + 56px)',
+				}}
+			/>
 		</BasicLayout>
 	);
 }

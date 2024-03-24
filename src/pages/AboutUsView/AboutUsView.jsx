@@ -17,7 +17,6 @@ export default function AboutUsView() {
 				<IonRow class='ion-justify-content-center'>
 					<MenuHeader title={'Sobre Nosostros'} />
 				</IonRow>
-				{/* TODO: add a class to ion row to fill the hole line */}
 
 				<IonRow>
 					<IonCol size='12' gap={2}>
