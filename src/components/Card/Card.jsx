@@ -21,6 +21,7 @@ export default function Card({
 			href={href}
 			routerDirection='forward'
 			target={href ? '_self' : undefined}
+			className='ion-no-margin'
 		>
 			{image && <IonImg src={image} alt={alt} className='ion-padding' />}
 			{(title || subtitle) && (
