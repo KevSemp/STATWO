@@ -17,18 +17,24 @@ import {
 } from './GaussGraphic';
 
 // Verificar si z está dentro del rango válido
-export default function GaussBell({ xLimit = 10, alpha1, alpha2, z = 0 }) {
+export default function GaussBell({
+	xLimit = 10,
+	alpha1,
+	alpha2,
+	z = 0,
+	mean = 0,
+}) {
 	// Datos para las áreas sombreadas
-	const shadedAreaData1 = LeftArea(xLimit, alpha1);
-	const shadedAreaData2 = RightArea(xLimit, alpha2);
-	const isZHipotesisValid = isHipotesisValid(z, xLimit, alpha1, alpha2);
-	const yMax = getYMax(xLimit);
+	const shadedAreaData1 = LeftArea(xLimit, alpha1, mean);
+	const shadedAreaData2 = RightArea(xLimit, alpha2, mean);
+	const isZHipotesisValid = isHipotesisValid(z, xLimit, alpha1, alpha2, mean);
+	const yMax = getYMax(xLimit, mean);
 	const yDomain = [0, yMax * 1.2];
-	const data = getData(xLimit);
+	const data = getData(xLimit, mean);
 	return (
 		<VictoryChart
 			theme={VictoryTheme.material}
-			domain={{ x: [-xLimit, xLimit], y: yDomain }}
+			domain={{ x: [mean - xLimit, mean + xLimit], y: yDomain }}
 			style={{ parent: { background: 'white' } }}
 		>
 			<VictoryAxis tickFormat={() => ''} />
@@ -47,7 +53,7 @@ export default function GaussBell({ xLimit = 10, alpha1, alpha2, z = 0 }) {
 				data={shadedAreaData2}
 				style={{ data: { fill: '#f76d64' } }}
 			/>
-			{alpha1 && alpha1 <= 0 && (
+			{alpha1 && alpha1 <= mean && (
 				<VictoryLine
 					data={[
 						{ x: alpha1, y: 0 },
@@ -64,7 +70,7 @@ export default function GaussBell({ xLimit = 10, alpha1, alpha2, z = 0 }) {
 					labelComponent={<VictoryLabel dy={30} />}
 				/>
 			)}
-			{alpha2 && alpha2 >= 0 && (
+			{alpha2 && alpha2 >= mean && (
 				<VictoryLine
 					data={[
 						{ x: alpha2, y: 0 },

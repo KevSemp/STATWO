@@ -3,29 +3,34 @@ import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import BasicLayout from '../../layouts/BasicLayout/BasicLayout';
 import { useRef } from 'react';
 import html2canvas from 'html2canvas';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
+const saveGeneratedImage = async (imageData, format = 'jpeg') => {
+	// Asegúrate de que imageData esté en formato base64
+
+	// Escribe el archivo en el directorio de datos
+	const fileName = new Date().getTime() + '.' + format;
+	await Filesystem.writeFile({
+		path: 'secrets/text.txt',
+		data: 'This is a test',
+		directory: Directory.Documents,
+		encoding: Encoding.UTF8,
+	});
+};
 export default function GaussView() {
 	const graphicRef = useRef(null);
 	const handleClick = async () => {
 		const canvas = await html2canvas(graphicRef.current);
 		let imgData = canvas.toDataURL('image/png');
 		let blob = await fetch(imgData).then((r) => r.blob());
-
-		const fileName = `chart_${new Date().getTime()}.png`;
-		const saveResult = await Filesystem.writeFile({
-			path: fileName,
-			data: blob,
-			directory: Directory.ExternalStorage,
-		});
-
-		alert(
-			`La imagen se ha guardado en la galería con el nombre ${fileName}`
-		);
+		console.log(blob);
+		const savedImageFile = await saveGeneratedImage(blob, 'png');
+		console.log(savedImageFile);
 	};
-	const z = 1.76;
-	const alpha1 = -12.76;
-	const alpha2 = 12.76;
+	const mean = -100;
+	const z = 1.76 + mean;
+	const alpha1 = -12.76 + mean;
+	const alpha2 = 12.76 + mean;
 	return (
 		<BasicLayout>
 			<IonGrid
@@ -42,9 +47,10 @@ export default function GaussView() {
 					<IonRow class='ion-justify-content-center' ref={graphicRef}>
 						<GaussBell
 							z={z}
+							xLimit={25}
+							mean={mean}
 							alpha1={alpha1}
 							alpha2={alpha2}
-							xLimit={25}
 						/>
 					</IonRow>
 					<IonRow class='ion-justify-content-center'>
