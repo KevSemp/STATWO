@@ -33,6 +33,7 @@ import MoreInfoView from './pages/MoreInfoView/MoreInfoView';
 import LoginView from './pages/LoginView/LoginView';
 import RegistroView from './pages/RegistroView/RegistroView';
 import RecuperarView from './pages/RecuperarView/RecuperarView';
+import Profile from "./pages/Profile/Profile";
 
 setupIonicReact();
 
@@ -55,6 +56,9 @@ const App = () => (
 					</Route>
 					<Route exact path='/about_us'>
 						<AboutUsView />
+					</Route>
+					<Route exact path='/perfil'>
+						<Profile />
 					</Route>
 					<Route exact path='/about_us/:id'>
 						<MoreInfoView isProfile />

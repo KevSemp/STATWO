@@ -6,6 +6,24 @@
 	width: 100%;
 }
 
+.profile-pic-container {
+	position: relative;
+	height: 100px;
+	width: 100px;
+}
+
+ion-avatar {
+	text-align: right;
+}
+
+ion-icon{
+	font-size: 30px;
+	position: relative;
+	margin-left: 2.8rem;
+	margin-bottom: 1rem;
+	margin-top: -6rem;
+}
+
 .form_container {
 	display: flex;
 	flex-direction: column;
