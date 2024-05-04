@@ -48,6 +48,8 @@ export const formulario = [
 		tema: 'Distribución Muestral para Medias',
 		titulo: 'Distribución Normal',
 		subtema: ['medias'],
+		hasGraph: true,
+		graphVariables: ['x', 'u', 'z'],
 	},
 	{
 		id: 2,
@@ -95,9 +97,12 @@ export const formulario = [
 		],
 		descripcion:
 			'Calcula la probabilidad de una varianza en la muestra al conocer el valor de la varianza poblacional. Para su cálculo se utiliza la distribución chi-cuadrado.',
-		tema: 'Distribución Muestral para Medias',
+		tema: 'Distribución Muestral para Varianza',
 		titulo: 'Distribución Normal',
 		subtema: ['varianzas'],
+		hasGraph: true,
+		graphVariables: ['n_val', 'X^2'],
+		selectSign: true,
 	},
 	{
 		id: 3,
@@ -149,6 +154,9 @@ export const formulario = [
 		tema: 'Distribución Muestral de la Proporción',
 		titulo: 'Distribución Normal',
 		subtema: ['varianzas'],
+		hasGraph: true,
+		graphVariables: ['P', 'sigma'],
+		selectSign: true,
 	},
 	{
 		id: 4,
