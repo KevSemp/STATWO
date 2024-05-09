@@ -322,6 +322,11 @@ export const formulario = [
 		tema: 'Pruebas de hipótesis para medias 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
+		hasGraph: true,
+		graphVariables: ['Z'],
+		selectSign: true,
+		selectSign2: true,
+		requestAlpha: true,
 	},
 	{
 		id: 7,
@@ -370,6 +375,12 @@ export const formulario = [
 		tema: 'Pruebas de hipótesis para proporciones 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
+
+		hasGraph: true,
+		graphVariables: ['Z'],
+		selectSign: true,
+		selectSign2: true,
+		requestAlpha: true,
 	},
 	{
 		id: 8,
@@ -418,6 +429,11 @@ export const formulario = [
 		tema: 'Hipótesis para varianzas 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
+		hasGraph: true,
+		graphVariables: ['X^2', 'n'],
+		selectSign: true,
+		selectSign2: true,
+		requestAlpha: true,
 	},
 	{
 		id: 9,
@@ -504,5 +520,10 @@ export const formulario = [
 		tema: 'Pruebas de hipótesis para medias 2 poblaciones',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
+		hasGraph: true,
+		graphVariables: ['z'],
+		selectSign: true,
+		selectSign2: true,
+		requestAlpha: true,
 	},
 ];
