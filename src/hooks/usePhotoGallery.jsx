@@ -9,6 +9,7 @@ import { Capacitor } from '@capacitor/core';
 const PHOTO_STORAGE = 'photos';
 export function usePhotoGallery() {
 	const [photos, setPhotos] = useState([]);
+	const [lastPhotoPath, setLastPhotoPath] = useState('');
 
 	useEffect(() => {
 		const loadSaved = async () => {
@@ -31,6 +32,26 @@ export function usePhotoGallery() {
 		loadSaved();
 	}, []);
 
+	const getPhoto = async (image_name) => {
+		const { value } = await Preferences.get({ key: PHOTO_STORAGE });
+
+		const photosInPreferences = value ? JSON.parse(value) : [];
+		// If running on the web...
+		if (!isPlatform('hybrid')) {
+			for (let photo of photosInPreferences) {
+				if (photo.filepath === image_name) {
+					const file = await Filesystem.readFile({
+						path: photo.filepath,
+						directory: Directory.Data,
+					});
+					// Web platform only: Load the photo as base64 data
+					photo.webviewPath = `data:image/jpeg;base64,${file.data}`;
+					return photo;
+				}
+			}
+		}
+	};
+
 	const takePhoto = async (photo) => {
 		/* const photo = await Camera.getPhoto({
 			resultType: CameraResultType.Uri,
@@ -43,7 +64,7 @@ export function usePhotoGallery() {
 			webPath: photo,
 		};
 
-		console.log(image);
+		//console.log(image);
 		const fileName = new Date().getTime() + '.jpeg';
 		const savedFileImage = await savePicture(image, fileName);
 		const newPhotos = [savedFileImage, ...photos];
@@ -52,6 +73,7 @@ export function usePhotoGallery() {
 			key: PHOTO_STORAGE,
 			value: JSON.stringify(newPhotos),
 		});
+		return savedFileImage;
 	};
 
 	const savePicture = async (photo, fileName) => {
@@ -70,9 +92,12 @@ export function usePhotoGallery() {
 			data: base64Data,
 			directory: Directory.Data,
 		});
-		console.log(savedFile);
+		//console.log(savedFile);
+		console.log('savedFile', Capacitor.convertFileSrc(savedFile.uri));
 
 		if (isPlatform('hybrid')) {
+			setLastPhotoPath(savedFile.uri);
+
 			return {
 				filepath: savedFile.uri,
 				webviewPath: Capacitor.convertFileSrc(savedFile.uri),
@@ -80,6 +105,7 @@ export function usePhotoGallery() {
 		} else {
 			// Use webPath to display the new image instead of base64 since it's
 			// already loaded into memory
+			setLastPhotoPath(photo.webPath);
 			return {
 				filepath: fileName,
 				webviewPath: photo.webPath,
@@ -106,12 +132,17 @@ export function usePhotoGallery() {
 			directory: Directory.Data,
 		});
 		setPhotos(newPhotos);
+		if (photo.webviewPath === lastPhotoPath) {
+			setLastPhotoPath('');
+		}
 	};
 
 	return {
 		deletePhoto,
 		photos,
 		takePhoto,
+		lastPhotoPath,
+		getPhoto,
 	};
 }
 
