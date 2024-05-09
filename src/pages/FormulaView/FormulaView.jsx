@@ -13,9 +13,14 @@ import {
 	IonInput,
 	IonModal,
 	IonRow,
+	IonText,
 } from '@ionic/react';
 import { evaluate } from 'mathjs';
-import { shareSocial, warning } from 'ionicons/icons';
+import {
+	chevronBackOutline,
+	chevronForwardOutline,
+	shareSocial,
+} from 'ionicons/icons';
 import { shareOptions } from '../../data/shareOptions';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -27,6 +32,7 @@ export default function FormulaView() {
 	const [showResult, setShowResult] = useState(false);
 	const [formulaText, setFormulaText] = useState('');
 	const [formulaResult, setFormulaResult] = useState('');
+	const [graphData, setGraphData] = useState({});
 	const [result, setResult] = useState('');
 	const [error, setError] = useState({
 		show: false,
@@ -34,6 +40,9 @@ export default function FormulaView() {
 	});
 	const modalRef = useRef();
 	const dismiss = () => modalRef.current?.dismiss();
+
+	const modalSignRef = useRef();
+	const dismissSign = () => modalSignRef.current?.dismiss();
 
 	const formula = useMemo(() => formulario.find((f) => +f.id === +id), [id]);
 
@@ -50,12 +59,23 @@ export default function FormulaView() {
 			[e.target.name]: +e.detail.value,
 		});
 	};
+	const handleGraph = () => {
+		console.log(graphData);
+	};
+	const setSign = (sign) => {
+		setGraphData((prevData) => ({
+			...prevData,
+			sign,
+		}));
+		dismissSign();
+	};
 	const handleBack = () => {
 		cleanText();
 	};
 	const handleRestart = () => {
 		setData({});
 		cleanText();
+		setGraphData({});
 	};
 	const cleanText = () => {
 		setShowResult(false);
@@ -103,6 +123,16 @@ export default function FormulaView() {
 		let operacion = formula.formula;
 		let operacion2 = formula?.formula2 ?? null;
 		let res = '';
+		let variablesGrafica = [];
+		if (formula?.hasGraph) {
+			variablesGrafica = Object.fromEntries(
+				[...formula.graphVariables].map((variable) => [
+					variable,
+					data[variable],
+				])
+			);
+		}
+
 		formula.variables
 			.filter((variable) => variable?.clean_symbol)
 			.forEach((variable) => {
@@ -122,7 +152,6 @@ export default function FormulaView() {
 					operacion = operacion.replace(`\\(${res}`, '');
 				}
 			});
-
 		const desigualdad = operacion.includes('\\pm');
 		!desigualdad && setFormulaResult(`\\(${res} ${operacion}`);
 		//Replace \\frac{$}{$} with ($)/($)
@@ -147,8 +176,16 @@ export default function FormulaView() {
 			setFormulaResult(`\\(${res} : ${operacion}\\)`);
 		} else {
 			result = evaluate(operacion);
+			if (formula?.hasGraph && variablesGrafica?.hasOwnProperty(res)) {
+				variablesGrafica[res] = result;
+			}
 			result = `${res} = ${result.toFixed(4)}`;
 		}
+		if (formula?.hasGraph) {
+			//console.log(variablesGrafica);
+			setGraphData(variablesGrafica);
+		}
+
 		setResult(result);
 		//addResult(result);
 		setShowResult(true);
@@ -308,6 +345,105 @@ export default function FormulaView() {
 								marginTop: '1rem',
 							}}
 						>
+							{formula?.hasGraph && (
+								<>
+									<IonButton
+										onClick={handleGraph}
+										shape='round'
+										size='small'
+										id='open-modal-sign'
+									>
+										Gráficar
+									</IonButton>
+									<IonModal
+										ref={modalSignRef}
+										trigger='open-modal-sign'
+										initialBreakpoint={0.25}
+										breakpoints={[0, 0.25]}
+									>
+										<IonContent className='ion-padding ion-text-center'>
+											<IonRow
+												class='ion-text-center'
+												style={{
+													justifyContent: 'center',
+												}}
+											>
+												<h2>Seleccione:</h2>
+											</IonRow>
+											<div
+												style={{
+													display: 'flex',
+													flexDirection: 'row',
+													flexWrap: 'wrap',
+													gap: '1rem',
+													marginTop: '1rem',
+													justifyContent:
+														'space-evenly',
+													alignItems: 'center',
+												}}
+											>
+												<IonButton
+													shape='round'
+													size={'large'}
+													fill='clear'
+													color={'dark'}
+													className='share-button'
+													style={{
+														display: 'flex',
+														flexDirection: 'column',
+														alignItems: 'center',
+														justifyContent:
+															'center',
+														gap: '0.5rem',
+													}}
+													onClick={() => setSign('<')}
+												>
+													<IonIcon
+														icon={
+															chevronBackOutline
+														}
+													/>
+													{/* <span>Menor que</span> */}
+												</IonButton>
+												<IonButton
+													shape='round'
+													size={'large'}
+													fill='clear'
+													color={'dark'}
+													className='share-button'
+													style={{
+														display: 'flex',
+														flexDirection: 'column',
+														alignItems: 'center',
+														justifyContent:
+															'center',
+														gap: '0.5rem',
+													}}
+													onClick={() => setSign('>')}
+												>
+													<IonIcon
+														icon={
+															chevronForwardOutline
+														}
+													/>
+													{/* <span>Mayor que</span> */}
+												</IonButton>
+											</div>
+											<div className='s-formula-result-buttons'>
+												<IonButton
+													onClick={() => {
+														dismissSign();
+													}}
+													shape='round'
+													size='small'
+												>
+													Cancelar
+												</IonButton>
+											</div>
+										</IonContent>
+									</IonModal>
+								</>
+							)}
 							<IonButton
 								onClick={handleBack}
 								shape='round'
