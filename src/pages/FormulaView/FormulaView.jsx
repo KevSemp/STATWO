@@ -6,29 +6,32 @@ import FormulaHeader from '../../components/FormulaHeader/FormulaHeader';
 import { MathJax } from 'better-react-mathjax';
 import Formula from '../../components/Formula/Formula';
 import {
-	IonAvatar,
 	IonButton,
 	IonCol,
 	IonContent,
 	IonIcon,
-	IonImg,
 	IonInput,
-	IonItem,
-	IonLabel,
-	IonList,
 	IonModal,
 	IonRow,
 } from '@ionic/react';
 import { evaluate } from 'mathjs';
-import { shareSocial } from 'ionicons/icons';
+import { shareSocial, warning } from 'ionicons/icons';
 import { shareOptions } from '../../data/shareOptions';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormulaView() {
 	const { id } = useParams();
 	const [data, setData] = useState({});
 	const [showResult, setShowResult] = useState(false);
 	const [formulaText, setFormulaText] = useState('');
+	const [formulaResult, setFormulaResult] = useState('');
 	const [result, setResult] = useState('');
+	const [error, setError] = useState({
+		show: false,
+		message: '',
+	});
 	const modalRef = useRef();
 	const dismiss = () => modalRef.current?.dismiss();
 
@@ -36,6 +39,9 @@ export default function FormulaView() {
 
 	useEffect(() => {
 		setFormulaText(formula?.formula);
+		return () => {
+			setFormulaText('');
+		};
 	}, [formula]);
 
 	const handleChange = (e) => {
@@ -45,31 +51,54 @@ export default function FormulaView() {
 		});
 	};
 	const handleBack = () => {
-		setShowResult(false);
-		setFormulaText(formula?.formula);
-		setResult('');
+		cleanText();
 	};
 	const handleRestart = () => {
 		setData({});
+		cleanText();
+	};
+	const cleanText = () => {
 		setShowResult(false);
 		setFormulaText(formula?.formula);
+		setFormulaResult('');
 		setResult('');
+		setError({
+			show: false,
+			message: '',
+		});
 	};
 	const handleShare = () => {
 		const modal = document.getElementById('modal-share');
 		modal.classList.add('show-modal');
 	};
-	const invalidForm = () =>
-		formula?.variables?.find(
-			(variable) =>
+	const invalidForm = () => {
+		let message = '';
+		const hasError = formula?.variables?.find((variable) => {
+			if (variable?.invalid?.length > 0) {
+				message =
+					`${variable.simbolo}` +
+					' no puede ser ' +
+					variable.invalid.join(', ');
+				//message = variable.invalid.join(', ');
+			}
+			return (
 				variable.formulario &&
 				(!data.hasOwnProperty(variable?.nombre) ||
 					variable?.invalid?.includes(data[variable?.nombre]))
-		);
+			);
+		});
+		if (hasError) {
+			toast.error(<MathJax inline>{`${message}`}</MathJax>, {
+				position: 'bottom-center',
+				toastId: 'error',
+				theme: 'colored',
+			});
+			return true;
+		}
+		return false;
+	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		//TODO: ver donde mostrar el error para el usuario
-		//console.log(data);
 		if (invalidForm()) return;
 		let operacion = formula.formula;
 		let operacion2 = formula?.formula2 ?? null;
@@ -82,7 +111,7 @@ export default function FormulaView() {
 						variable.replace_symbol,
 						data[variable.nombre]
 					);
-					console.log(operacion);
+					//console.log(operacion);
 					if (operacion2)
 						operacion2 = operacion2.replaceAll(
 							variable.nombre,
@@ -90,12 +119,12 @@ export default function FormulaView() {
 						);
 				} else {
 					res = variable.replace_symbol;
-					operacion = operacion.replace(res, '');
+					operacion = operacion.replace(`\\(${res}`, '');
 				}
 			});
 
 		const desigualdad = operacion.includes('\\pm');
-		!desigualdad && setFormulaText(`${res} ${operacion}`);
+		!desigualdad && setFormulaResult(`\\(${res} ${operacion}`);
 		//Replace \\frac{$}{$} with ($)/($)
 		if (!operacion2)
 			operacion = operacion
@@ -106,7 +135,7 @@ export default function FormulaView() {
 				.replace(/\s+/g, '');
 		// remove spaces
 		else operacion = operacion2.replace('=', '').replace(':', '');
-		console.log(operacion);
+		//console.log(operacion);
 		let result;
 		if (desigualdad) {
 			const min = evaluate(operacion.replace(/\\pm/g, '-'));
@@ -115,6 +144,7 @@ export default function FormulaView() {
 			result = `${parseFloat(min).toFixed(4)} ≤ ${res} ≤ ${parseFloat(
 				max
 			).toFixed(4)}`;
+			setFormulaResult(`\\(${res} : ${operacion}\\)`);
 		} else {
 			result = evaluate(operacion);
 			result = `${res} = ${result.toFixed(4)}`;
@@ -134,7 +164,7 @@ export default function FormulaView() {
 				topic={formula?.tema}
 				formulaID={formula.id}
 			/>
-			<Formula formula={formulaText} />
+			{!showResult && formulaText && <Formula formula={formulaText} />}
 			{!showResult && (
 				<form
 					onSubmit={handleSubmit}
@@ -148,8 +178,9 @@ export default function FormulaView() {
 						width: '100%',
 					}}
 				>
-					{formula?.variables.map(
-						(variable, index) =>
+					{formula?.variables.map((variable, index) => {
+						//console.log(variable.simbolo);
+						return (
 							variable.formulario && (
 								<div
 									key={index}
@@ -175,12 +206,14 @@ export default function FormulaView() {
 									></IonInput>
 								</div>
 							)
-					)}
+						);
+					})}
 					<IonButton expand='block' type='submit'>
 						Calcular
 					</IonButton>
 				</form>
 			)}
+			{showResult && formulaResult && <Formula formula={formulaResult} />}
 			{showResult && (
 				<IonRow
 					class='ion-text-center'
@@ -293,6 +326,11 @@ export default function FormulaView() {
 					</IonCol>
 				</IonRow>
 			)}
+			<ToastContainer
+				style={{
+					bottom: 'calc(env(safe-area-inset-bottom) + 56px)',
+				}}
+			/>
 		</BasicLayout>
 	);
 }

@@ -11,7 +11,9 @@ export default function HomeView() {
 			<IonGrid
 				class={`ion-text-center ion-no-padding ${styles.centered_menu}`}
 			>
-				<IonRow class='ion-justify-content-center'>
+				<IonRow
+					class={`ion-justify-content-center ${styles.gapped_card}`}
+				>
 					{PRIMARY_MENU.map((item) => (
 						<Card
 							key={item.id}

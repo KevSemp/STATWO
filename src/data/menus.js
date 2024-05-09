@@ -82,7 +82,7 @@ export const PRIMARY_MENU = [
 				subtitle: 'Medias 2 poblaciones',
 				path: '/formula/9',
 			},
-			{
+			/* {
 				id: '3.5',
 				title: 'Hipótesis para varianzas 2 poblaciones',
 				subtitle: 'Varianzas 2 poblaciones',
@@ -99,7 +99,7 @@ export const PRIMARY_MENU = [
 				title: 'Pruebas especiales de Chi-Cuadrado',
 				subtitle: 'Chi-Cuadrado',
 				path: '/formula/12',
-			},
+			}, */
 		],
 	},
 ];

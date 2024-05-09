@@ -21,7 +21,6 @@ export default function LoginView() {
 	const [presentAlert] = useIonAlert();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
 		try{
 			loading();
 			const response = await handleLogin(email,password);
@@ -50,6 +49,18 @@ export default function LoginView() {
 		});
 	}
 
+	const handleUserChange = (e) => {
+		console.log(e.value);
+		console.log(e.target.value);
+		setEmail(e.target.value);
+	};
+
+	const handlePasswordChange = (e)=>{
+		console.log(e.value);
+		console.log(e.target.value);
+		setPassword(e.target.value);
+	}
+
 	const prueba = (e)  => {
 		console.log(e);
 	}
@@ -67,9 +78,9 @@ export default function LoginView() {
 								label='Correo electrónico'
 								labelPlacement='floating'
 								fill='outline'
-								type='email'
+								type='text'
 								value={email}
-								onIonChange={(e) => setEmail(e.target.value)}
+								onIonInput={(e) => setEmail(e.target.value)}
 								placeholder='Correo electrónico'
 								required
 							></IonInput>
@@ -79,7 +90,7 @@ export default function LoginView() {
 								fill='outline'
 								type='password'
 								value={password}
-								onIonChange={(e) => setPassword(e.target.value)}
+								onIonInput={(e) => setPassword(e.target.value)}
 								placeholder='Contraseña'
 								required
 							></IonInput>

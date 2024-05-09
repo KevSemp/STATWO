@@ -72,7 +72,7 @@ export default function RegistroView() {
 								fill='outline'
 								type='email'
 								value={email}
-								onIonChange={(e) => setEmail(e.target.value)}
+								onIonInput ={(e) => setEmail(e.target.value)}
 								placeholder='Correo electrónico'
 								required
 							></IonInput>
@@ -82,7 +82,7 @@ export default function RegistroView() {
 								fill='outline'
 								type='password'
 								value={password}
-								onIonChange={(e) => setPassword(e.target.value)}
+								onIonInput={(e) => setPassword(e.target.value)}
 								placeholder='Contraseña'
 								required
 							></IonInput>

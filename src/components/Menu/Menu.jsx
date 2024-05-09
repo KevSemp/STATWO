@@ -92,6 +92,9 @@ export default function Menu() {
 							<IonLabel>Cerrar Sesión</IonLabel>
 						</IonItem>
 					)}
+					<IonItem button={true} href='/gauss'>
+						<IonLabel>GaussTest</IonLabel>
+					</IonItem>
 				</IonList>
 			</IonContent>
 		</IonMenu>
