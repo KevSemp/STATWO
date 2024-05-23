@@ -36,20 +36,27 @@ export function usePhotoGallery() {
 		const { value } = await Preferences.get({ key: PHOTO_STORAGE });
 
 		const photosInPreferences = value ? JSON.parse(value) : [];
+		let returnedPhoto = null;
 		// If running on the web...
 		if (!isPlatform('hybrid')) {
 			for (let photo of photosInPreferences) {
 				if (photo.filepath === image_name) {
-					const file = await Filesystem.readFile({
+					const file = await Filesystem.getUri({
 						path: photo.filepath,
 						directory: Directory.Data,
 					});
-					// Web platform only: Load the photo as base64 data
-					photo.webviewPath = `data:image/jpeg;base64,${file.data}`;
-					return photo;
+					const data = await Filesystem.readFile({
+						path: file.uri,
+					});
+					return data.data;
+					photo.webviewPath = `data:image/jpeg;base64,${data.data}`;
+					return photo.webviewPath;
+
+					return file.uri;
 				}
 			}
 		}
+		return null;
 	};
 
 	const takePhoto = async (photo) => {
@@ -64,8 +71,7 @@ export function usePhotoGallery() {
 			webPath: photo,
 		};
 
-		//console.log(image);
-		const fileName = new Date().getTime() + '.jpeg';
+		const fileName = uuid() + '.jpeg';
 		const savedFileImage = await savePicture(image, fileName);
 		const newPhotos = [savedFileImage, ...photos];
 		setPhotos(newPhotos);
@@ -92,8 +98,6 @@ export function usePhotoGallery() {
 			data: base64Data,
 			directory: Directory.Data,
 		});
-		//console.log(savedFile);
-		console.log('savedFile', Capacitor.convertFileSrc(savedFile.uri));
 
 		if (isPlatform('hybrid')) {
 			setLastPhotoPath(savedFile.uri);
@@ -162,3 +166,15 @@ export async function base64FromPath(path) {
 		reader.readAsDataURL(blob);
 	});
 }
+
+//generate a uuid
+const uuid = () => {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+		/[xy]/g,
+		function (c) {
+			var r = (Math.random() * 16) | 0,
+				v = c == 'x' ? r : (r & 0x3) | 0x8;
+			return v.toString(16);
+		}
+	);
+};

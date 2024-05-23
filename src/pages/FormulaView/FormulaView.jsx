@@ -14,8 +14,9 @@ import {
 	IonModal,
 	IonRow,
 	IonText,
+	isPlatform,
 } from '@ionic/react';
-import { evaluate, i } from 'mathjs';
+import { evaluate } from 'mathjs';
 import {
 	chevronBackOutline,
 	chevronForwardOutline,
@@ -30,6 +31,8 @@ import html2canvas from 'html2canvas';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { Directory } from '@capacitor/filesystem';
+import { Camera } from '@capacitor/camera';
+import { FileSharer } from '@byteowls/capacitor-filesharer';
 
 export default function FormulaView() {
 	const { id } = useParams();
@@ -82,7 +85,6 @@ export default function FormulaView() {
 			...prevData,
 			sign,
 		}));
-		console.log({ ...graphData, sign });
 		dismissSign();
 		if (formula?.selectSign2) setShowAlphaModal(true);
 		else handleGraph();
@@ -92,7 +94,6 @@ export default function FormulaView() {
 			...prevData,
 			alpha: data?.alpha,
 		}));
-		console.log({ ...graphData, alpha: data?.alpha });
 		setShowAlphaModal(false);
 		handleGraph();
 	};
@@ -116,35 +117,37 @@ export default function FormulaView() {
 	};
 	const handleShare = async () => {
 		const image_name = await saveImage();
-		console.log(image_name);
 		const image = await getPhoto(image_name.filepath);
 		console.log(image);
-		if (navigator.share) {
-			/* await Share.share({
-				title: 'Mira mi resultado!',
-				text: `El resultado de la fórmula es: ${result}`,
-				dialogTitle: 'Comparte tu resultado',
-				url: image.filepath,
-			});*/
-			navigator
-				.share({
-					files: [
-						new File(
-							[Directory.Data + '/' + image.filepath],
-							'imagen.png',
-							{
-								type: 'image/png',
-							}
-						),
-					],
-					title: 'Imagen',
-					text: 'Mira esta imagen.',
-				})
-				.then(() => console.log('Contenido compartido exitosamente'))
-				.catch((error) =>
-					console.log('Hubo un error al compartir', error)
-				);
-		}
+		const base64Image = await FileSharer.share({
+			filename: 'test.png',
+			contentType: 'image/png',
+			// If you want to save base64:
+			base64Data: image,
+			// If you want to save a file from a path:
+			//path: "../../file.pdf",
+		})
+			.then(() => {
+				// do sth
+				console.log('entro');
+			})
+			.catch((error) => {
+				console.error('File sharing failed', error.message);
+			});
+		/* if (isPlatform('hybrid')) {
+			await Share.share({
+				title: 'Compartir imagen',
+				text: 'Mira esta imagen',
+				url: base64Image,
+				dialogTitle: 'Compartir imagen',
+			});
+		} else {
+			await navigator.share({
+				title: 'Compartir imagen',
+				text: 'Mira esta imagen',
+				url: base64Image,
+			});
+		} */
 	};
 	const invalidForm = () => {
 		let message = '';
@@ -196,7 +199,6 @@ export default function FormulaView() {
 						variable.replace_symbol,
 						data[variable.nombre]
 					);
-					//console.log(operacion);
 					if (operacion2)
 						operacion2 = operacion2.replaceAll(
 							variable.nombre,
@@ -219,7 +221,6 @@ export default function FormulaView() {
 				.replace(/\s+/g, '');
 		// remove spaces
 		else operacion = operacion2.replace('=', '').replace(':', '');
-		//console.log(operacion);
 		let result;
 		if (desigualdad) {
 			const min = evaluate(operacion.replace(/\\pm/g, '-'));
@@ -237,7 +238,6 @@ export default function FormulaView() {
 			result = `${res} = ${result.toFixed(4)}`;
 		}
 		if (formula?.hasGraph) {
-			//console.log(variablesGrafica);
 			setGraphData(variablesGrafica);
 		}
 
@@ -271,7 +271,6 @@ export default function FormulaView() {
 					}}
 				>
 					{formula?.variables.map((variable, index) => {
-						//console.log(variable.simbolo);
 						return (
 							variable.formulario && (
 								<div

@@ -12,6 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@byteowls/capacitor-filesharer": "^5.0.0",
     "@capacitor/android": "5.0.3",
     "@capacitor/app": "5.0.2",
     "@capacitor/camera": "^5.0.9",
