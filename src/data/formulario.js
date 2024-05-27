@@ -155,7 +155,7 @@ export const formulario = [
 		titulo: 'Distribución Normal',
 		subtema: ['varianzas'],
 		hasGraph: true,
-		graphVariables: ['P', 'sigma'],
+		graphVariables: ['P', 'Z`'],
 		selectSign: true,
 	},
 	{

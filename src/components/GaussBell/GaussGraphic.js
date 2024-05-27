@@ -42,6 +42,7 @@ export const RightArea = (xLimit, alpha2, mean = 0) => {
 
 // si alpha 1 es null tomar negtive x y si alpha 2 es null tomar positive x, adicional a eso si alpha 1 y alpha 2 son null devolver un true
 export const isHipotesisValid = (z, xLimit, alpha1, alpha2, mean = 0) => {
+	if (z === null) return false;
 	if (alpha1 === null && alpha2 === null) return true;
 	if (alpha1 >= 0 || alpha2 <= 0) return true;
 	const left = alpha1 || mean - xLimit;

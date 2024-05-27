@@ -1,22 +1,28 @@
 import GaussBell from '../../components/GaussBell/GaussBell';
-import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
+import {IonButton, IonCol, IonGrid, IonLabel, IonRow} from '@ionic/react';
 import BasicLayout from '../../layouts/BasicLayout/BasicLayout';
 import { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { usePhotoGallery } from '../../hooks/usePhotoGallery';
+import {useParams} from "react-router";
+import {useLocation} from "react-router";
 
 export default function GaussView() {
 	const { takePhoto } = usePhotoGallery();
+	const { search } = useLocation();
+	const query = new URLSearchParams(search)
+	console.log(query.get('res'));
 	const graphicRef = useRef(null);
 	const handleClick = async () => {
 		const canvas = await html2canvas(graphicRef.current);
 		let dataUrl = canvas.toDataURL('image/png');
 		takePhoto(dataUrl);
 	};
-	const mean = 0;
-	const z = 1.76 + mean;
-	const alpha1 = -12.76 + mean;
-	const alpha2 = 12.76 + mean;
+	const mean = +query.get('m');
+	const z = query.get('z') === null ? null : +query.get('z');
+	const alpha1 =query.get('x') === null ? null :  +query.get('x');
+	const alpha2 = query.get('y') === null ? null :  +query.get('y');
+	const result = query.get('res');
 	return (
 		<BasicLayout>
 			<IonGrid
@@ -31,6 +37,7 @@ export default function GaussView() {
 			>
 				<IonCol>
 					<IonRow class='ion-justify-content-center' ref={graphicRef}>
+						<IonLabel style={{marginBottom: '2rem',fontWeight: 'bold'}}>{result}</IonLabel>
 						<GaussBell
 							z={z}
 							xLimit={25}

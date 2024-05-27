@@ -31,10 +31,13 @@ import html2canvas from 'html2canvas';
 import 'react-toastify/dist/ReactToastify.css';
 import { usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { Directory } from '@capacitor/filesystem';
+import {useHistory} from "react-router";
+import {chiCuadrado, searchCriticalValueZ, searchZValue,graphValues} from "../../utils/searchGraphicValues.js";
 import { Camera } from '@capacitor/camera';
 import { FileSharer } from '@byteowls/capacitor-filesharer';
 
-export default function FormulaView() {
+export default function FormulaView({}) {
+	const history = useHistory();
 	const { id } = useParams();
 	const [data, setData] = useState({});
 	const [showResult, setShowResult] = useState(false);
@@ -78,7 +81,12 @@ export default function FormulaView() {
 		});
 	};
 	const handleGraph = () => {
+		//graphValues(graphData);
+		const {textResult} =  graphValues(graphData,id);
+		console.log(graphData,id);
+		history.push(`/gauss?m=${graphData.u}&x=${graphData.x}&res=${textResult}`)
 		console.log(graphData);
+
 	};
 	const setSign = (sign) => {
 		setGraphData((prevData) => ({

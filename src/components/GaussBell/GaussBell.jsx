@@ -106,7 +106,7 @@ export default function GaussBell({
 			)}
 			{!isZHipotesisValid && (
 				<VictoryLabel
-					text='El valor de z no es un punto válido.'
+					text=''
 					x={200}
 					y={30}
 					textAnchor='middle'
