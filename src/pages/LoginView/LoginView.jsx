@@ -6,10 +6,65 @@ import {
 	IonRouterLink,
 	IonButton,
 } from '@ionic/react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import BasicLayout from '../../layouts/BasicLayout/BasicLayout';
+import {handleLogin,handleGetUserInfo,handleLogout,createCollection,saveResult} from "../../utils/firebase.js";
 import styles from './LoginView.module.css';
+import { useIonLoading,useIonAlert } from '@ionic/react';
+import {useHistory} from "react-router";
 
 export default function LoginView() {
+	const history = useHistory();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [present, dismiss] = useIonLoading();
+	const [presentAlert] = useIonAlert();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try{
+			loading();
+			const response = await handleLogin(email,password);
+			dismiss();
+			history.push('/');
+
+		}catch (error) {
+			dismiss();
+			console.log(error);
+			presentAlert({
+				header: 'Error',
+				cssClass: 'my-custom-class',
+				message: 'Credenciales Incorrectas',
+				buttons: ['OK'],
+			})
+
+			return;
+
+		}
+	}
+
+	const loading = () => {
+		present({
+			message: 'Loading...',
+			cssClass: 'custom-loading',
+		});
+	}
+
+	const handleUserChange = (e) => {
+		console.log(e.value);
+		console.log(e.target.value);
+		setEmail(e.target.value);
+	};
+
+	const handlePasswordChange = (e)=>{
+		console.log(e.value);
+		console.log(e.target.value);
+		setPassword(e.target.value);
+	}
+
+	const prueba = (e)  => {
+		console.log(e);
+	}
+
 	return (
 		<BasicLayout>
 			<IonGrid
@@ -18,12 +73,14 @@ export default function LoginView() {
 				<IonCol size={12} class='ion-justify-content-center'>
 					<div className={styles.form_container}>
 						<h1>Iniciar Sesión</h1>
-						<form onSubmit={(e) => e.preventDefault()}>
+						<form onSubmit={handleSubmit}>
 							<IonInput
 								label='Correo electrónico'
 								labelPlacement='floating'
 								fill='outline'
-								type='email'
+								type='text'
+								value={email}
+								onIonInput={(e) => setEmail(e.target.value)}
 								placeholder='Correo electrónico'
 								required
 							></IonInput>
@@ -32,6 +89,8 @@ export default function LoginView() {
 								labelPlacement='floating'
 								fill='outline'
 								type='password'
+								value={password}
+								onIonInput={(e) => setPassword(e.target.value)}
 								placeholder='Contraseña'
 								required
 							></IonInput>

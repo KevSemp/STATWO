@@ -12,8 +12,34 @@ import {
 } from '@ionic/react';
 import { listCircle } from 'ionicons/icons';
 import { PRIMARY_MENU } from '../../data/menus';
-
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import {handleLogout} from "../../utils/firebase.js";
+import {useHistory} from "react-router";
 export default function Menu() {
+	const [isLogOut, setIsLogOut] = useState(true);
+	const history = useHistory();
+	const signOut = async () => {
+		await handleLogout();
+		history.push('/');
+	}
+
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
+			if (currentUser) {
+				console.log(currentUser)
+				// El usuario está autenticado
+				console.log(true);
+				setIsLogOut(false)
+			} else {
+				// No hay usuario autenticado
+				setIsLogOut(true)
+			}
+		});
+
+		// Se ejecuta al desmontar el componente para limpiar el listener
+		return () => unsubscribe();
+	}, []);
 	return (
 		<IonMenu contentId='main-content' menuId='main-options-content'>
 			<IonHeader>
@@ -46,23 +72,27 @@ export default function Menu() {
 					<IonItem button={true} href='/about_us'>
 						<IonLabel>Sobre Nosotros</IonLabel>
 					</IonItem>
-					{false && (
+					{isLogOut ? (
+						<></>
+					) : (
 						<IonItem button={true} href='/perfil'>
 							<IonLabel>Perfil</IonLabel>
 						</IonItem>
 					)}
-					{true ? (
+
+
+					{isLogOut ? (
 						<IonItem button={true} href='/login'>
 							<IonLabel>Iniciar Sesión</IonLabel>
 						</IonItem>
 					) : (
-						<IonItem button={true} href='/logout'>
+						<IonItem button={true}  onClick={() => {
+							signOut();
+						}}>
 							<IonLabel>Cerrar Sesión</IonLabel>
 						</IonItem>
 					)}
-					<IonItem button={true} href='/gauss'>
-						<IonLabel>GaussTest</IonLabel>
-					</IonItem>
+				
 				</IonList>
 			</IonContent>
 		</IonMenu>

@@ -6,6 +6,26 @@
 	width: 100%;
 }
 
+ion-loading.custom-loading {
+	--background: #e3edff;
+	--spinner-color: #1c6dff;
+
+	color: #1c6dff;
+}
+
+/* DOES NOT WORK - not specific enough */
+.alert-wrapper {
+	background: #e5e5e5;
+}
+.alert-wrapper.sc-ion-alert-md {
+	background: white !important;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .alert-wrapper {
+	background: #e5e5e5;
+}
+
 .form_container {
 	display: flex;
 	flex-direction: column;
