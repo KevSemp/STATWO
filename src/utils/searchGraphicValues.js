@@ -6,44 +6,94 @@ export function graphValues(resultObject,idFormula){
         case '1':
             return distribucionMedias(resultObject);
         case '2':
-            break;
+            return  distribucionVarianza(resultObject);
+        case '3':
+            return distribucionProporcion(resultObject);
+        case '6':
+            return hipotesisMedias(resultObject);
+        case '7':
+            return hipotesisMedias(resultObject);
+        case '8':
+            return hipotesisVarianzas(resultObject);
+        case '9':
+            return hipotesisMediasPoblaciones(resultObject);
+
+
 
     }
     //console.log(chiCuadrado(graphObject['X^2'],graphObject.n_val,graphObject.sign));
     //console.log(searchZValue(graphObject.Z,graphObject.sign));
     //searchZValue(graphObject.z,graphObject.sign);
-    distribucionMedias(resultObject);
+
     //hipotesis medias
     //hipotesisMedias(resultObject);
 
 
 }
 
+function hipotesisMediasPoblaciones (resultObject){
+    resultObject.Z = resultObject.z;
+    return (hipotesisMedias(resultObject));
+}
+
 function distribucionMedias (resultObject){
+
     const probabilityResult =  searchZValue(resultObject.z);
 
-    const resultData = {
-        probabilityResult,
-        textResult: `P(Z) = ${probabilityResult}`
+    const textResult = `P(Z) = ${probabilityResult}`
+
+    const limit = resultObject.u > resultObject.x ? `x=${resultObject.x}`  : `y=${resultObject.x}`;
+
+    if (probabilityResult){
+        return  `/gauss?m=${resultObject.u}&${limit}&res=${textResult}`
     }
+    
+    return '';
 
-    console.log(resultData);
-    return  resultData;
-
+    
 }
 
 function distribucionProporcion (resultObject){
-    let probabilityResult =  searchZValue(resultObject.z);
-    probabilityResult = resultObject.sign === '>' ? parseFloat((1-probability).toFixed(4)) : probability;
+    let probability =  searchZValue(parseFloat((resultObject.Z).toFixed(4)));
+    const probabilityResult = resultObject.sign === '>' ? parseFloat((1-probability).toFixed(4)) : probability;
+    const textResult = `P(p) = ${probabilityResult}`
+    const limit = resultObject.p_prom > resultObject.P ? `y=${resultObject.p_prom}`  : `x=${resultObject.p_prom}`;
 
+    if(probabilityResult){
+        return `/gauss?m=${resultObject.P}&${limit}&res=${textResult}`
+    }
     const resultData = {
         probabilityResult
     }
 
 }
 
+function distribucionVarianza(resultObject){
+    const probabilityResult =  chiCuadrado(resultObject['X^2'],resultObject['n_val'])
+    const textResult = `P(S) = ${probabilityResult}`
+    if(probabilityResult) {
+        return `/gauss?m=${resultObject['X^2'] + 10}&x=${resultObject['X^2']}&res=${textResult}`
+    }
+
+    return '';
+}
+
+function hipotesisVarianzas(resultObject){
+    if(resultObject.sign === '!='){
+       const yValue = chiCuadrado(resultObject.alpha,resultObject.n,true,resultObject.alpha);
+       const xValue = chiCuadrado(resultObject.alpha,resultObject.n,true,1-resultObject.alpha)
+        let media = ((yValue - xValue) / 2);
+        media = xValue + media;
+        return `/gauss?m=${media}&x=${xValue}&y=${yValue}&z=${resultObject['X^2']}&res=${0}`
+    }
+    const xValue = chiCuadrado(resultObject.alpha,resultObject.n,true,1-resultObject.alpha)
+    return `/gauss?m=${xValue + 10}&x=${xValue}&z=${resultObject['X^2']}&res=${0}`
+
+}
+
 
 function hipotesisMedias(resultObject){
+    console.log(resultObject);
     const probability  = searchZValue(parseFloat(resultObject.Z).toFixed(4))
     const criticalValue = searchCriticalValueZ(resultObject.alpha,resultObject.sign);
     const probabilityResult  = resultObject.sign === '!=' ? parseFloat((1-probability).toFixed(4)) : probability;
@@ -54,21 +104,34 @@ function hipotesisMedias(resultObject){
         probabilityResult
     }
 
+    if(probabilityResult) {
+        switch (resultObject.sign) {
+            case '!=':
+                return `/gauss?m=${0}&x=${criticalValue*-1}&y=${criticalValue}&z=${resultObject.Z}&res=P(Z)=${probabilityResult}`
+            case '>':
+                return `/gauss?m=${0}&y=${criticalValue}&z=${resultObject.Z}&res=P(Z)=${probabilityResult}`
+            default:
+                return `/gauss?m=${0}&x=${criticalValue*-1}&z=${resultObject.Z}&res=P(Z)=${probabilityResult}`
+        }
+    }
+
     console.log(resultData);
 }
 
 export function searchZValue(value) {
     console.log(value);
+
     let ones = Math.floor(value); // Parte entera: -3
     let tenths  = Math.floor((value - ones) * 10); // Décimas: 5
     let hundreds = Math.round((value - ones - (tenths  / 10)) * 100); // Centésimas: 9
 
     let firstValue = ones + tenths  / 10; // -2.5
     let secondValue = hundreds / 100; // 0.09
+    firstValue = + firstValue.toFixed(1)
     const valorZ = firstValue;
 // Buscar el objeto que contiene el valor Z
     const tempObject = AREA_BAJO_CURVA.find(objeto => objeto.Z === valorZ);
-
+    console.log(tempObject);
     if (tempObject) {
         const result = tempObject[secondValue];
         if (result !== undefined) {
@@ -76,20 +139,24 @@ export function searchZValue(value) {
             return result;
 
         } else {
-            console.log("El número no fue encontrado en el objeto Z");
+            throw ("El número no fue encontrado en el objeto Z");
         }
     } else {
-        console.log("No se encontró ningún objeto con el valor Z buscado");
+        throw ("No se encontró ningún objeto con el valor Z buscado");
     }
 
 }
 
-export function chiCuadrado(result,nValue,sign){
+export function chiCuadrado(result,nValue,isHipotesis = false,searchValue){
     nValue = nValue - 1;
 
     let glBuscado = nValue;
 
     let objetoGL = CHI_CUADRADA.find(objeto => objeto['g.l.'] === glBuscado);
+    if(isHipotesis){
+        return objetoGL[searchValue.toString()]
+    }
+
 
     if (objetoGL) {
         let segundoNumeroBuscado = result;
@@ -98,9 +165,10 @@ export function chiCuadrado(result,nValue,sign){
         let numeroMasCercano = keys.reduce((anterior, actual) => {
             return Math.abs(objetoGL[actual] - segundoNumeroBuscado) < Math.abs(objetoGL[anterior] - segundoNumeroBuscado) ? actual : anterior;
         });
-        return sign === '<' ?  1-numeroMasCercano : numeroMasCercano;
+        return numeroMasCercano;
+        // return sign === '<' ?  1-numeroMasCercano : numeroMasCercano;
     } else {
-        console.log("No se encontró ningún objeto con el valor de 'g.l.' buscado");
+       throw ("No se encontró ningún objeto con el valor de 'g.l.' buscado");
     }
 }
 

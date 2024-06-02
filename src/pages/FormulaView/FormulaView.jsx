@@ -81,18 +81,29 @@ export default function FormulaView({}) {
 		});
 	};
 	const handleGraph = () => {
-		//graphValues(graphData);
-		const {textResult} =  graphValues(graphData,id);
-		console.log(graphData,id);
-		history.push(`/gauss?m=${graphData.u}&x=${graphData.x}&res=${textResult}`)
-		console.log(graphData);
+		//graphValues(graphData
+		console.log(id === '1',graphData)
+		if(id !== '1' && !graphData.sign) return;
+		console.log('paso');
+        try{
+			const route =  graphValues(graphData,id);
+			if(route !== ''){
+				history.push(route);
+				return;
+			}
+			history.push(`/gauss?m=${graphData['X^2']+10}&x=${graphData['X^2']}&res=${textResult}`)
+		}catch (e) {
+			console.log(e);
+		}
 
 	};
-	const setSign = (sign) => {
-		setGraphData((prevData) => ({
+	const setSign = async  (sign) => {
+		console.log(sign)
+		await setGraphData((prevData) => ({
 			...prevData,
-			sign,
+			sign:sign,
 		}));
+		console.log(graphData);
 		dismissSign();
 		if (formula?.selectSign2) setShowAlphaModal(true);
 		else handleGraph();
