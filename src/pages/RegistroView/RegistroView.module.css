@@ -16,7 +16,7 @@ ion-avatar {
 	text-align: right;
 }
 
-ion-icon{
+ion-avatar > ion-icon{
 	font-size: 30px;
 	position: relative;
 	margin-left: 2.8rem;

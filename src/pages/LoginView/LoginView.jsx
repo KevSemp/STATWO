@@ -94,9 +94,7 @@ export default function LoginView() {
 								placeholder='Contraseña'
 								required
 							></IonInput>
-							<IonRouterLink routerLink='/recuperar'>
-								<span>¿Olvidaste tu contraseña?</span>
-							</IonRouterLink>
+
 							<IonButton expand='block' type='submit'>
 								Iniciar sesión
 							</IonButton>

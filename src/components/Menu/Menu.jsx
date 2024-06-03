@@ -92,7 +92,7 @@ export default function Menu() {
 							<IonLabel>Cerrar Sesión</IonLabel>
 						</IonItem>
 					)}
-				
+
 				</IonList>
 			</IonContent>
 		</IonMenu>

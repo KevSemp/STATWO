@@ -1,7 +1,10 @@
 import {AREA_BAJO_CURVA} from "../data/graphics/area_bajo_la_curva.js";
 import {CHI_CUADRADA} from "../data/graphics/chi_cuadrada.js";
-
-export function graphValues(resultObject,idFormula){
+import {saveResult} from "./firebase.js";
+export function graphValues(resultObject,idFormula,sign='',alpha=''){
+    resultObject.sign = sign;
+    resultObject.alpha = alpha;
+    console.log(resultObject);
     switch (idFormula) {
         case '1':
             return distribucionMedias(resultObject);
@@ -38,13 +41,14 @@ function hipotesisMediasPoblaciones (resultObject){
 
 function distribucionMedias (resultObject){
 
-    const probabilityResult =  searchZValue(resultObject.z);
+    const probabilityResult =  searchZValue(resultObject.z.toFixed(4));
 
     const textResult = `P(Z) = ${probabilityResult}`
 
     const limit = resultObject.u > resultObject.x ? `x=${resultObject.x}`  : `y=${resultObject.x}`;
 
     if (probabilityResult){
+        saveResult(`z=${resultObject.z.toFixed(4)} ,${textResult}`)
         return  `/gauss?m=${resultObject.u}&${limit}&res=${textResult}`
     }
     
@@ -60,6 +64,7 @@ function distribucionProporcion (resultObject){
     const limit = resultObject.p_prom > resultObject.P ? `y=${resultObject.p_prom}`  : `x=${resultObject.p_prom}`;
 
     if(probabilityResult){
+        saveResult(`p = ${resultObject.Z.toFixed(4)} , ${textResult}`)
         return `/gauss?m=${resultObject.P}&${limit}&res=${textResult}`
     }
     const resultData = {
@@ -72,6 +77,7 @@ function distribucionVarianza(resultObject){
     const probabilityResult =  chiCuadrado(resultObject['X^2'],resultObject['n_val'])
     const textResult = `P(S) = ${probabilityResult}`
     if(probabilityResult) {
+        saveResult(`X^2 = ${resultObject['X^2']} , ${textResult}`)
         return `/gauss?m=${resultObject['X^2'] + 10}&x=${resultObject['X^2']}&res=${textResult}`
     }
 
@@ -84,10 +90,10 @@ function hipotesisVarianzas(resultObject){
        const xValue = chiCuadrado(resultObject.alpha,resultObject.n,true,1-resultObject.alpha)
         let media = ((yValue - xValue) / 2);
         media = xValue + media;
-        return `/gauss?m=${media}&x=${xValue}&y=${yValue}&z=${resultObject['X^2']}&res=${0}`
+        return `/gauss?m=${media}&x=${xValue}&y=${yValue}&z=${resultObject['X^2']}&res=P(X^2)=${resultObject['X^2']}`
     }
     const xValue = chiCuadrado(resultObject.alpha,resultObject.n,true,1-resultObject.alpha)
-    return `/gauss?m=${xValue + 10}&x=${xValue}&z=${resultObject['X^2']}&res=${0}`
+    return `/gauss?m=${xValue + 10}&x=${xValue}&z=${resultObject['X^2']}&res=P(X^2)=${resultObject['X^2']}`
 
 }
 
@@ -105,6 +111,7 @@ function hipotesisMedias(resultObject){
     }
 
     if(probabilityResult) {
+        saveResult(`z=${resultObject.Z} , P(Z)=${probabilityResult}`)
         switch (resultObject.sign) {
             case '!=':
                 return `/gauss?m=${0}&x=${criticalValue*-1}&y=${criticalValue}&z=${resultObject.Z}&res=P(Z)=${probabilityResult}`

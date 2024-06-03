@@ -318,7 +318,9 @@ export const formulario = [
 				formulario: true,
 			},
 		],
-		descripcion: 'Fomulación Hipótesis',
+		descripcion: 'La prueba de hipótesis para medias es un método estadístico que se utiliza para rechazar o aceptar la hipótesis nula de una media poblacional o de una diferencia de medias poblacionales. La prueba consiste en calcular el estadístico de la prueba y compararlo con el valor crítico para tomar una decisión¹². La prueba de hipótesis para medias se puede hacer con varianza conocida o desconocida, y dependiendo de eso se utiliza la distribución normal o la distribución t Student.\n' +
+			'\n' +
+			'Para realizar la prueba de hipótesis para medias, es necesario conocer la desviación estándar o al menos tener un estimado de ella. La desviación estándar se utiliza para calcular el estadístico de la prueba y el intervalo de confianza. Si no se conoce la desviación estándar poblacional, se puede utilizar la desviación estándar muestral como un estimado.',
 		tema: 'Pruebas de hipótesis para medias 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
@@ -371,7 +373,22 @@ export const formulario = [
 				formulario: true,
 			},
 		],
-		descripcion: 'Pruebas de hipótesis para proporciones 1 población',
+		descripcion: 'Las pruebas de proporciones son adecuadas cuando los\n' +
+			'datos que se están analizando constan de cuentas o\n' +
+			'frecuencias de elementos de dos o más clases. El objetivo\n' +
+			'de estas pruebas es evaluar las afirmaciones con respecto a una\n' +
+			'proporción (o Porcentaje) de población. Las pruebas\n' +
+			'se basan en la premisa de que una proporción muestral (es\n' +
+			'decir, x ocurrencias en n observaciones, o x/n) será igual\n' +
+			'a la proporción verdadera de la población si se\n' +
+			'toman márgenes o tolerancias para la variabilidad\n' +
+			'muestral. Las pruebas suelen enfocarse en la diferencia entre un\n' +
+			'número esperado de ocurrencias, suponiendo que una\n' +
+			'afirmación es verdadera, y el número observado\n' +
+			'realmente. La diferencia se compara con la variabilidad prescrita\n' +
+			'mediante una distribución de muestreo que tiene como base\n' +
+			'el supuesto de que  es\n' +
+			'realmente verdadera.',
 		tema: 'Pruebas de hipótesis para proporciones 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
@@ -425,7 +442,7 @@ export const formulario = [
 				formulario: true,
 			},
 		],
-		descripcion: 'Hipótesis para varianzas 1 población',
+		descripcion: 'a prueba de hipótesis para el cociente de varianzas es una herramienta estadística utilizada para evaluarsi las varianzas de dos poblaciones son iguales o diferentes. Esta prueba es especialmente útil en investigación y análisis de datos, ya que permite comparar la variabilidad entre dos grupos y determinar si hay una diferencia significativa entre ellos.Antes de entrar en detalles sobre la aplicación y las fórmulas de esta prueba, es importante comprender algunos conceptos básicos. La varianza es una medida estadística que indica cuánto se dispersan los datos alrededor de la media. Una varianza más grande implica mayor dispersión, mientras que una varianza más pequeña indica menos dispersión.La prueba de hipótesis para el cociente de varianzas se basa en el estadístico F, que sigue una distribución F de Fisher. Para realizar esta prueba, se plantean dos hipótesis: la hipótesis nula (H0) y la hipótesis alternativa (H1). La hipótesis nula asume que las varianzas son iguales, mientras que la hipótesis alternativa sugiere que las varianzas son diferentes.',
 		tema: 'Hipótesis para varianzas 1 población',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],
@@ -516,7 +533,11 @@ export const formulario = [
 				formulario: true,
 			},
 		],
-		descripcion: 'Pruebas de hipótesis para medias 2 poblaciones',
+		descripcion: 'Cuando se muestrean dos poblaciones diferentes, se emplean dos tipos de muestras: independientes y dependientes.\n' +
+			'\n' +
+			'Las muestras independientes son aquellas que no comparten características entre sí y que proceden de poblaciones diferentes, mientras que las muestras dependientes, al ser parte de la misma población, sí comparten características entre ellas.\n' +
+			'\n' +
+			'Es importante determinar la dependencia o independencia de las muestras, ya que esto determinará el tipo de prueba de hipótesis a utilizar.',
 		tema: 'Pruebas de hipótesis para medias 2 poblaciones',
 		titulo: 'Fomulación Hipótesis',
 		subtema: ['varianzas'],

@@ -15,6 +15,7 @@ import {
 	IonRow,
 	IonText,
 	isPlatform,
+	useIonViewWillEnter
 } from '@ionic/react';
 import { evaluate } from 'mathjs';
 import {
@@ -35,7 +36,8 @@ import {useHistory} from "react-router";
 import {chiCuadrado, searchCriticalValueZ, searchZValue,graphValues} from "../../utils/searchGraphicValues.js";
 import { Camera } from '@capacitor/camera';
 import { FileSharer } from '@byteowls/capacitor-filesharer';
-
+let resultSign = '' ;
+let resultAlpha = '';
 export default function FormulaView({}) {
 	const history = useHistory();
 	const { id } = useParams();
@@ -74,6 +76,13 @@ export default function FormulaView({}) {
 		};
 	}, [formula]);
 
+
+	useIonViewWillEnter(() => {
+		 resultSign = '' ;
+		 resultAlpha = '';
+	});
+
+
 	const handleChange = (e) => {
 		setData({
 			...data,
@@ -82,28 +91,32 @@ export default function FormulaView({}) {
 	};
 	const handleGraph = () => {
 		//graphValues(graphData
-		console.log(id === '1',graphData)
-		if(id !== '1' && !graphData.sign) return;
-		console.log('paso');
+		console.log(formula.id,resultSign)
+		console.log(id !== 1 && resultSign !== '');
+		console.log('paso 1',resultSign);
+		if(formula.id !== 1 && resultSign === '') return;
+		console.log('paso 2',resultSign);
         try{
-			const route =  graphValues(graphData,id);
+
+			const route =  graphValues(graphData,id,resultSign,resultAlpha);
 			if(route !== ''){
 				history.push(route);
 				return;
 			}
-			history.push(`/gauss?m=${graphData['X^2']+10}&x=${graphData['X^2']}&res=${textResult}`)
+
 		}catch (e) {
 			console.log(e);
 		}
 
 	};
-	const setSign = async  (sign) => {
+	const setSign =   (sign) => {
 		console.log(sign)
-		await setGraphData((prevData) => ({
+		 setGraphData((prevData) => ({
 			...prevData,
 			sign:sign,
 		}));
-		console.log(graphData);
+		resultSign = sign;
+		console.log(graphData,resultSign);
 		dismissSign();
 		if (formula?.selectSign2) setShowAlphaModal(true);
 		else handleGraph();
@@ -113,6 +126,7 @@ export default function FormulaView({}) {
 			...prevData,
 			alpha: data?.alpha,
 		}));
+		resultAlpha =  data?.alpha;
 		setShowAlphaModal(false);
 		handleGraph();
 	};

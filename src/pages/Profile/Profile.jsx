@@ -39,7 +39,7 @@ export default function Profile() {
                 <IonRow class='ion-justify-content-center ion-margin-bottom'>
                     <IonAvatar  class="profile-pic-container">
                         <img alt="Silhouette of a person's head" src={imageProfile} />
-                        <IonIcon  class="camera-icon" icon={camera}></IonIcon>
+
                     </IonAvatar>
 
                 </IonRow>

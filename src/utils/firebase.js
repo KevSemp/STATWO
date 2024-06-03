@@ -53,15 +53,19 @@ export const handleSignUp = async (email,password,base64Image) => {
         const user = userCredential.user;
 
         // Subir la imagen al Storage
-        const storage = getStorage();
-        const storageRef = ref(storage, `profile_images/${user.uid}`);
-        await uploadString(storageRef, base64Image, 'base64',{ contentType: 'image/jpg' });
+        if(base64Image) {
+            const storage = getStorage();
+            const storageRef = ref(storage, `profile_images/${user.uid}`);
+            await uploadString(storageRef, base64Image, 'base64', {contentType: 'image/jpg'});
 
-        // Obtener la URL de descarga de la imagen
-        const imageUrl = await getDownloadURL(storageRef);
+            // Obtener la URL de descarga de la imagen
+            const imageUrl = await getDownloadURL(storageRef);
 
-        // Actualizar el perfil del usuario con la URL de la imagen
-        await updateProfile(user, { photoURL: imageUrl });
+            // Actualizar el perfil del usuario con la URL de la imagen
+            await updateProfile(user, {photoURL: imageUrl});
+        }
+        localStorage.setItem('ST_U',JSON.stringify(user));
+        await createCollection(user)
 
         console.log('Usuario creado con imagen de perfil:', user);
     } catch (error) {
@@ -85,10 +89,11 @@ export const updateProfilePhoto = async (userId, base64Image) => {
     }
 };
 
-export const createCollection = async () => {
+export const createCollection = async (user) => {
     try{
-        const {userData}  = handleGetUserInfo();
-        await setDoc(doc(db, "results", userData.uid), {
+
+        console.log(user,'create user data');
+        await setDoc(doc(db, "results", user.uid), {
             results:[]
         });
     }catch (e) {
