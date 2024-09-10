@@ -36,6 +36,7 @@ import RecuperarView from './pages/RecuperarView/RecuperarView';
 import GaussView from './pages/GaussView/GaussView';
 import Profile from './pages/Profile/Profile';
 import TestView from './pages/TestView/TestView';
+import DeleteAccount from "./pages/DeleteAccount/DeleteAccount";
 import PrivacyView from './pages/PrivacyView/PrivacyView';
 
 setupIonicReact();
@@ -74,6 +75,9 @@ const App = () => (
 					</Route>
 					<Route exact path='/login'>
 						<LoginView />
+					</Route>
+					<Route exact path='/delete'>
+						<DeleteAccount />
 					</Route>
 					<Route exact path='/registro'>
 						<RegistroView />

@@ -27,9 +27,7 @@ export default function Menu() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(getAuth(), (currentUser) => {
 			if (currentUser) {
-				console.log(currentUser)
 				// El usuario está autenticado
-				console.log(true);
 				setIsLogOut(false)
 			} else {
 				// No hay usuario autenticado

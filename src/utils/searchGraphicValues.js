@@ -181,7 +181,7 @@ export function chiCuadrado(result,nValue,isHipotesis = false,searchValue){
 
 export function searchCriticalValueZ(alpha,sign){
     const numero = sign === '!=' ?  alpha/2:alpha;
-    console.log(sign,numero)
+
     let valorMasCercano;
     let objetoMasCercano;
     let parametroMasCercano;
@@ -204,7 +204,7 @@ export function searchCriticalValueZ(alpha,sign){
 
     let zValue = (objetoMasCercano.Z);
     zValue = zValue<0 ? (objetoMasCercano.Z)*-1 : objetoMasCercano.Z;
-    console.log(zValue+parseFloat(parametroMasCercano));
+
     return (zValue+parseFloat(parametroMasCercano));
 
     //console.log({ valor: valorMasCercano, objeto: objetoMasCercano,parametroMasCercano }) ;

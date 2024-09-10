@@ -33,7 +33,6 @@ export default function RegistroView() {
 			resultType: CameraResultType.Base64
 		});
 
-		console.log(image);
 		setAvatarImage(`data:image/jpeg;base64,${image.base64String}`);
 		setImgB64(image.base64String);
 

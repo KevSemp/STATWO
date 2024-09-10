@@ -91,11 +91,8 @@ export default function FormulaView({}) {
 	};
 	const handleGraph = () => {
 		//graphValues(graphData
-		console.log(formula.id,resultSign)
-		console.log(id !== 1 && resultSign !== '');
-		console.log('paso 1',resultSign);
+
 		if(formula.id !== 1 && resultSign === '') return;
-		console.log('paso 2',resultSign);
         try{
 
 			const route =  graphValues(graphData,id,resultSign,resultAlpha);
@@ -162,7 +159,6 @@ export default function FormulaView({}) {
 		})
 			.then(() => {
 				// do sth
-				console.log('entro');
 			})
 			.catch((error) => {
 				console.error('File sharing failed', error.message);
@@ -323,7 +319,7 @@ export default function FormulaView({}) {
 									=
 									<IonInput
 										name={variable.nombre}
-										type={variable.tipo}
+										type='tel'
 										value={data[variable?.nombre]}
 										onIonChange={handleChange}
 										required
@@ -360,12 +356,7 @@ export default function FormulaView({}) {
 					>
 						<h2>
 							Resultado
-							<IonIcon
-								icon={shareSocial}
-								onClick={handleShare}
-								id='open-modal-share'
-								expand='block'
-							/>
+
 							{/* <IonModal
 								ref={modalRef}
 								trigger='open-modal-share'

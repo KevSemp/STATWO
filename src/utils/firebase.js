@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth,signOut  } from 'firebase/auth';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
-import { signInWithEmailAndPassword,updateProfile ,createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword,updateProfile ,createUserWithEmailAndPassword,deleteUser } from 'firebase/auth';
 import { getFirestore, collection,addDoc,setDoc,doc,arrayUnion,updateDoc,getDoc} from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -67,11 +67,24 @@ export const handleSignUp = async (email,password,base64Image) => {
         localStorage.setItem('ST_U',JSON.stringify(user));
         await createCollection(user)
 
-        console.log('Usuario creado con imagen de perfil:', user);
     } catch (error) {
         console.error('Error al crear usuario', error);
     }
 };
+
+
+export const handleDelete = async (email,password) => {
+    try {
+        const auth = getAuth();
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await deleteUser(userCredential.user);
+        return true;
+    } catch (error) {
+        console.error('Error al crear usuario', error);
+    }
+};
+
+
 
 
 export const updateProfilePhoto = async (userId, base64Image) => {
